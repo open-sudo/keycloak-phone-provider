@@ -4,15 +4,19 @@ metadata:
   name: keycloak-config 
   namespace: appui-backend
 data:
-    SMS_PROVIDER_SERVER: twilio
-    SMS_TOKEN_EXPIRES: 180
-    SMS_HOUR_MAXIMUM: 300
-    TWILIO_ACCOUNT_ID: "??"
-    TWILIO_AUTH_TOKEN:  "??"
-    TWILIO_SEND_PHONE_NUMBER: "??"
+      SMS_PROVIDER_SERVER: twilio
+      SMS_TOKEN_EXPIRES: 180
+      SMS_HOUR_MAXIMUM: 300
+      TWILIO_ACCOUNT_ID: "AC6e73ce8bddb3b60b24c8ca5f2f79e1a5"
+      TWILIO_AUTH_TOKEN:  "6a4f3ee1d4754c96be58de4474543c2f"
+      TWILIO_SEND_PHONE_NUMBER: "16474241535"
 
-    KEYCLOAK_USER: admin
-    KEYCLOAK_PASSWORD: admin
-    DB_VENDOR: mariadb
-    DB_ADDR: database
-    DB_DATABASE: keycloak
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      DB_ADDR: postgresql
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_PASSWORD: k@ycl0ck
+      DB_VENDOR: postgres
+      DB_PORT: 5432
+  
