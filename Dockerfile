@@ -1,5 +1,5 @@
-#Builder
 FROM maven:3.8.2-jdk-11 as builder
+
 RUN git clone https://github.com/open-sudo/keycloak-phone-provider.git
 WORKDIR keycloak-phone-provider
 RUN mvn package -f keycloak-phone-provider/pom.xml 
