@@ -1,26 +1,36 @@
 apiVersion: build.openshift.io/v1
 kind: BuildConfig
 metadata:
-    name: nginx-hello-world
+    name: keycloak-appui
 spec:
   runPolicy: Serial
   source:
     dockerfile: |
+      #Builder
+      FROM maven:3.8.2-jdk-11 as builder
+      RUN git clone https://github.com/open-sudo/keycloak-phone-provider.git
+      WORKDIR keycloak-phone-provider
+      RUN mvn package -f keycloak-phone-provider/pom.xml
+
+
+      # Runner
       FROM quay.io/keycloak/keycloak:11.0.3
       WORKDIR /tmp
 
       RUN  curl -fSL https://repo1.maven.org/maven2/com/twilio/sdk/twilio/7.53.0/twilio-7.53.0.jar -o twilio-7.53.0.jar \
-        && curl -fSL https://repo1.maven.org/maven2/org/ini4j/ini4j/0.5.4/ini4j-0.5.4.jar -o ini4j-0.5.4.jar \
-        && curl -fSL https://repo1.maven.org/maven2/org/jacoco/org.jacoco.agent/0.8.5/org.jacoco.agent-0.8.5-runtime.jar -o org.jacoco.agent-0.8.5-runtime.jar
+       && curl -fSL https://repo1.maven.org/maven2/org/ini4j/ini4j/0.5.4/ini4j-0.5.4.jar -o ini4j-0.5.4.jar \
+       && curl -fSL https://repo1.maven.org/maven2/org/jacoco/org.jacoco.agent/0.8.5/org.jacoco.agent-0.8.5-runtime.jar -o org.jacoco.agent-0.8.5-runtime.jar
 
-      COPY modules/keycloak-phone-provider/main/keycloak-phone-provider.jar .
-      COPY modules/keycloak-sms-provider-twilio/main/keycloak-sms-provider-twilio.jar .
+      COPY --from=builder  /keycloak-phone-provider/target/modules/keycloak-phone-provider/main/keycloak-phone-provider.jar .
+      COPY --from=builder  /keycloak-phone-provider/target/modules/keycloak-sms-provider-twilio/main/keycloak-sms-provider-twilio.jar .
 
-      COPY module-add.cli cli/
+
+      COPY --from=builder  /keycloak-phone-provider/target/module-add.cli cli/
       RUN $JBOSS_HOME/bin/jboss-cli.sh --file=cli/module-add.cli
       RUN rm -rf $JBOSS_HOME/standalone/configuration/standalone_xml_history/current
 
-      COPY standalone/deployments/keycloak-phone-provider.resources.jar $JBOSS_HOME/standalone/deployments/
+      COPY --from=builder  /keycloak-phone-provider/target/standalone/deployments/keycloak-phone-provider.resources.jar $JBOSS_HOME/standalone/deployments/
+
   strategy:
     type: Docker
     dockerStrategy:
@@ -28,5 +38,5 @@ spec:
   output:
     to:
       kind: ImageStreamTag
-      name: "nginx-hello-world:latest"
+      name: "keycloak-appui:latest"
 #https://docs.olcf.ornl.gov/services_and_applications/slate/use_cases/nginx_hello_world.html
