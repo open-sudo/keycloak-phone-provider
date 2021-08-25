@@ -24,6 +24,9 @@ services:
       SMS_PROVIDER_SERVER: twilio
       SMS_TOKEN_EXPIRES: 180
       SMS_HOUR_MAXIMUM: 300
+      TWILIO_ACCOUNT_ID: "??"
+      TWILIO_AUTH_TOKEN:  "??"
+      TWILIO_SEND_PHONE_NUMBER: "??"
 
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
