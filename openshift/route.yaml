@@ -1,0 +1,16 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: nginx-hello-world
+spec:
+  # hostname: foo.apps.CLUSTER.ccs.ornl.gov
+  port:
+    targetPort: nginx
+#  tls:
+#    insecureEdgeTerminationPolicy: Redirect
+#    termination: edge
+  to:
+    kind: Service
+    name: nginx-hello-world
+    weight: 100
+  wildcardPolicy: None

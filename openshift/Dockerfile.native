@@ -1,0 +1,23 @@
+####
+# This Dockerfile is used in order to build a container that runs the Quarkus application in native (no JVM) mode
+#
+# Before building the container image run:
+#
+# ./mvnw package -Pnative
+#
+# Then, build the image with:
+#
+# docker build -f src/main/docker/Dockerfile.native -t quarkus/support-dashboard .
+#
+# Then run the container using:
+#
+# docker run -i --rm -p 8080:8080 quarkus/support-dashboard
+#
+###
+FROM registry.access.redhat.com/ubi8/nginx-120
+
+ADD test-app/nginx.conf "${NGINX_CONF_PATH}"
+ADD test-app/nginx-default-cfg/*.conf "${NGINX_DEFAULT_CONF_PATH}"
+ADD test-app/nginx-cfg/*.conf "${NGINX_CONFIGURATION_PATH}"
+ADD test-app/*.html .
+CMD nginx -g "daemon off;"
