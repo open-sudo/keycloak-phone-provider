@@ -3,15 +3,14 @@ services:
 
 
   database:
-    image: mariadb:latest
+    image: postgres:latest
 #    restart: always
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: p0stgr@s
-      MYSQL_DATABASE: keycloak
-      MYSQL_USER: keycloak
-      MYSQL_PASSWORD: k@ycl0ck
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: k@ycl0ck
       TZ: America/NewYork
 
 
@@ -25,18 +24,15 @@ services:
       SMS_PROVIDER_SERVER: twilio
       SMS_TOKEN_EXPIRES: 180
       SMS_HOUR_MAXIMUM: 300
-      TWILIO_ACCOUNT_ID: "??"
-      TWILIO_AUTH_TOKEN:  "??"
-      TWILIO_SEND_PHONE_NUMBER: "??"
 
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
-      DB_VENDOR: mariadb
       DB_ADDR: database
       DB_DATABASE: keycloak
       DB_USER: keycloak
       DB_PASSWORD: k@ycl0ck
-      DB_PORT: 3306
+      DB_VENDOR: postgres
+      DB_PORT: 5432
     links:
       - database:database
     depends_on:
