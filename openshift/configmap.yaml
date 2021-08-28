@@ -1,8 +1,11 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: keycloak-config 
+  name: keycloak-appui-config 
   namespace: appui-backend-project
+  labels:
+    app: keycloak-appui
+    app.kubernetes.io/part-of: appui-backend
 data:
       SMS_PROVIDER_SERVER: twilio
       SMS_TOKEN_EXPIRES: 180
@@ -15,4 +18,8 @@ data:
       DB_PASSWORD: k@ycl0ck
       DB_VENDOR: postgres
       DB_PORT: 5432
+  
+      TWILIO_ACCOUNT_ID: "AC6e73ce8bddb3b60b24c8ca5f2f79e1a5"
+      TWILIO_AUTH_TOKEN:  "c46026d3821fce49a14a8928e59ec86c"
+      TWILIO_SEND_PHONE_NUMBER: "16474241535"
   

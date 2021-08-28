@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-hello-world
+  name: keycloak-appui
   labels:
-    app: nginx-hello-world
-    app.kubernetes.io/part-of: workshop
+    app: keycloak-appui
+    app.kubernetes.io/part-of: appui-backend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: nginx-hello-world
+      app: keycloak-appui
   template:
     metadata:
       labels:
-        app: nginx-hello-world
+        app: keycloak-appui
     spec:
       containers:
-        - name: nginx
-          image: "image-registry.openshift-image-registry.svc:5000/pfenkam-stage/nginx-hello-world"
+        - name: keycloak-appui
+          image: "image-registry.openshift-image-registry.svc:5000/appui-backend-project/keycloak-appui"
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
           tty: true

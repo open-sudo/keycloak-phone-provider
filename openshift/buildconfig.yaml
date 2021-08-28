@@ -9,13 +9,11 @@ spec:
       #Builder
       FROM maven:3.8.2-jdk-11 as builder
       RUN git clone https://github.com/open-sudo/keycloak-phone-provider.git
-      WORKDIR keycloak-phone-provider
       RUN mvn package -f keycloak-phone-provider/pom.xml
 
 
       # Runner
       FROM quay.io/keycloak/keycloak:11.0.3
-      WORKDIR /tmp
 
       RUN  curl -fSL https://repo1.maven.org/maven2/com/twilio/sdk/twilio/7.53.0/twilio-7.53.0.jar -o twilio-7.53.0.jar \
        && curl -fSL https://repo1.maven.org/maven2/org/ini4j/ini4j/0.5.4/ini4j-0.5.4.jar -o ini4j-0.5.4.jar \
@@ -30,6 +28,21 @@ spec:
       RUN rm -rf $JBOSS_HOME/standalone/configuration/standalone_xml_history/current
 
       COPY --from=builder  /keycloak-phone-provider/target/standalone/deployments/keycloak-phone-provider.resources.jar $JBOSS_HOME/standalone/deployments/
+      USER root
+      RUN chown -R 1000690000:root .
+      RUN chown -R 1000690000:root /opt/jboss
+      USER 1000690000
+      ENV SMS_PROVIDER_SERVER=twilio
+      ENV SMS_TOKEN_EXPIRES=180
+      ENV SMS_HOUR_MAXIMUM=300
+      ENV KEYCLOAK_USER=admin
+      ENV KEYCLOAK_PASSWORD=admin
+      ENV DB_ADDR=postgresql
+      ENV DB_DATABASE=keycloak
+      ENV DB_USER=keycloak
+      ENV DB_PASSWORD=k@ycl0ck
+      ENV DB_VENDOR=postgres
+      ENV DB_PORT=5432
 
   strategy:
     type: Docker
@@ -39,4 +52,3 @@ spec:
     to:
       kind: ImageStreamTag
       name: "keycloak-appui:latest"
-#https://docs.olcf.ornl.gov/services_and_applications/slate/use_cases/nginx_hello_world.html
