@@ -20,6 +20,7 @@ public class TokenCodeRepresentation {
     private Date createdAt;
     private Date expiresAt;
     private Boolean confirmed;
+    private Integer numberOfSendAttempts=0;
 
     public static TokenCodeRepresentation forPhoneNumber(String phoneNumber) {
 

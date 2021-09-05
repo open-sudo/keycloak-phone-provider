@@ -67,6 +67,7 @@ public class TokenCodeServiceImpl implements TokenCodeService {
             tokenCodeRepresentation.setCreatedAt(entity.getCreatedAt());
             tokenCodeRepresentation.setExpiresAt(entity.getExpiresAt());
             tokenCodeRepresentation.setConfirmed(entity.getConfirmed());
+            tokenCodeRepresentation.setNumberOfSendAttempts(entity.getNumberOfSendAttempts());
 
             return tokenCodeRepresentation;
         } catch (NoResultException e) {
@@ -104,7 +105,7 @@ public class TokenCodeServiceImpl implements TokenCodeService {
         entity.setCreatedAt(Date.from(now));
         entity.setExpiresAt(Date.from(now.plusSeconds(tokenExpiresIn)));
         entity.setConfirmed(tokenCode.getConfirmed());
-
+        entity.setNumberOfSendAttempts(tokenCode.getNumberOfSendAttempts());
         getEntityManager().persist(entity);
     }
 

@@ -51,15 +51,17 @@ public class PhoneMessageServiceImpl implements PhoneMessageService {
         }
 
         TokenCodeRepresentation ongoing = getTokenCodeService().ongoingProcess(phoneNumber, type);
-        if (ongoing != null) {
+        logger.info("Number of attemps:"+ongoing.getNumberOfSendAttempts());
+        if (ongoing != null && ongoing.getNumberOfSendAttempts()>2) {
             logger.info(String.format("No need of sending a new %s code for %s",type.getLabel(), phoneNumber));
             return (int) (ongoing.getExpiresAt().getTime() - Instant.now().toEpochMilli()) / 1000;
         }
 
         TokenCodeRepresentation token = TokenCodeRepresentation.forPhoneNumber(phoneNumber);
-
+logger.info("True number of attemps:"+token.getNumberOfSendAttempts());
         try {
             session.getProvider(MessageSenderService.class, service).sendSmsMessage(type,phoneNumber,token.getCode(),tokenExpiresIn);
+            token.setNumberOfSendAttempts(token.getNumberOfSendAttempts()+1);
             getTokenCodeService().persistCode(token, type, tokenExpiresIn);
 
             logger.info(String.format("Sent %s code to %s over %s",type.getLabel(), phoneNumber, service));

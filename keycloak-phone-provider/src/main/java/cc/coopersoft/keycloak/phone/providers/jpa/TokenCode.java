@@ -51,6 +51,9 @@ public class TokenCode {
     @Column(name = "CONFIRMED", nullable = false)
     private Boolean confirmed;
 
+    @Column(name = "NUMBER_OF_SEND_ATTEMPTS", nullable = false)
+    private Integer numberOfSendAttempts;
+
     @Column(name = "BY_WHOM", nullable = true)
     private String byWhom;
 }
