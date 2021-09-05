@@ -31,7 +31,7 @@ public class TokenCodeResource {
 
         if (phoneNumber == null) throw new BadRequestException("Must inform a phone number");
 
-        logger.info(String.format("Requested %s code to %s",tokenCodeType.getLabel(), phoneNumber));
+        logger.info(String.format("Requested %s code for phone number %s",tokenCodeType.getLabel(), phoneNumber));
         int tokenExpiresIn = session.getProvider(PhoneMessageService.class).sendTokenCode(phoneNumber,tokenCodeType);
 
         String response = String.format("{\"expires_in\":%s}", tokenExpiresIn);
