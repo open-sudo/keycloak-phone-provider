@@ -8,7 +8,9 @@
 *.ear
 *.nar
 hs_err_pid*
-
+docker-compose.yml
+buildconfig.yaml
+configmap.yaml
 ##############################
 ## Maven
 ##############################
